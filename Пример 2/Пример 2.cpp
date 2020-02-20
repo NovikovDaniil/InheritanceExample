@@ -46,7 +46,7 @@ protected:
 	}
 };
 
-class bird :public animal
+class bird :public virtual animal
 {
 private:
 	double topfly;
@@ -80,7 +80,7 @@ protected:
 	}
 };
 
-class predator :public animal
+class predator :public virtual animal
 {
 protected:
 	predator() {}
@@ -93,8 +93,8 @@ class eagle :public bird, public predator
 {
 public:
 	eagle() :bird() {}
-	eagle(const eagle& obj) :bird(obj) {}
-	eagle(double _mass, double _speed, double _topfly) :bird("Орел", _mass, _speed, _topfly) {}
+	eagle(const eagle& obj) :bird(obj), animal(obj) {}
+	eagle(double _mass, double _speed, double _topfly) :bird("", 0, 0, _topfly),animal("Орел", _mass, _speed){}
 	bool hunt(const animal& obj) override
 	{
 		return obj.get_mass() < bird::get_mass() && obj.get_speed() < bird::get_speed();
@@ -110,10 +110,10 @@ int main()
 	fish hammerhead("Рыба Молот", 150, 5, 0.5);
 	raven.print();
 	hammerhead.print();
-	cout<<" Eagle vs raven "<< eagle1.hunt(raven)<< endl;
+	cout<<" Eagle vs raven :"<< eagle1.hunt(raven)<< endl;
 	cout<<"Eagle vs hammerhead : "<< eagle1.hunt(hammerhead)<< endl;
 	predator  &eagle2 = *new eagle(1, 100, 1);
-	cout << " Eagle vs raven " << eagle2.hunt(raven) << endl;
+	cout << " Eagle vs raven: " << eagle2.hunt(raven) << endl;
 	cout << "Eagle vs hammerhead : " << eagle2.hunt(hammerhead) << endl;
 	cout << endl;
 	delete &eagle2;
